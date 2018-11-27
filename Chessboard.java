@@ -502,10 +502,12 @@ public class Chessboard {
 				return true;
 			}
 			
-			// enPassanting into an enemy square is already handled as a normal capture by if statement above
+			// enPassanting into an enemy square is not possible
 			if(piece > 0 && isEnemySquare(piece, endRow + 1, endCol) && canEnPassant[0] == endRow + 1 && canEnPassant[1] == endCol) {
+				enPassant(endRow + 1, endCol);
 				return true;
 			}else if(piece < 0 && isEnemySquare(piece, endRow - 1, endCol) && canEnPassant[0] == endRow - 1 && canEnPassant[1] == endCol) {
+				enPassant(endRow - 1, endCol);
 				return true;
 			}
 		}
