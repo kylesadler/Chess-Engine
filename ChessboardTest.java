@@ -1,0 +1,282 @@
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+
+class ChessboardTest {
+
+	@Test
+	@DisplayName("testing starting position rook movement")
+	void Test_Rook_Movement_In_Starting_Position() {
+		Chessboard cb = new Chessboard();
+		
+		// top right rook
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(0, 7, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+		// top left rook
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(0, 0, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+		// bottom left rook
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(7, 0, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+		// bottom right rook
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(7, 7, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+	}
+	@Test
+	@DisplayName("testing starting position bishop movement")
+	void Test_Bishop_Movement_In_Starting_Position() {
+		Chessboard cb = new Chessboard();
+		
+		// bottom left bishop
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(7, 2, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+		// top left bishop
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(0, 2, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+		// top right bishop
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(0, 5, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+		// bottom right bishop
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(7, 5, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+	}
+	@Test
+	@DisplayName("testing starting position king movement")
+	void Test_King_Movement_In_Starting_Position() {
+		Chessboard cb = new Chessboard();
+
+		// white king
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(7, 4, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+		// black king
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(0, 4, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+	}
+	@Test
+	@DisplayName("testing starting position queen movement")
+	void Test_Queen_Movement_In_Starting_Position() {
+		Chessboard cb = new Chessboard();
+		
+		// black queen
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(0, 3, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+		// white queen
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(7, 3, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+	}
+	@Test
+	@DisplayName("testing starting position pawn movement")
+	void Test_Pawn_Movement_In_Starting_Position() {
+		
+		Chessboard cb = new Chessboard();
+
+		// test all black pawns to make sure they don't move (bc not their turn)
+		int pawnRow = 2; 
+		for(int pawnCol = 0; pawnCol < 8; pawnCol++) {
+			for(int i = 0; i < 8; i++) {
+				for(int j = 0; j < 8; j++) {
+					cb.move(pawnRow, pawnCol, i, j);
+					assertBoardsEqual(cb, new Chessboard());
+				}
+			}
+		}
+		
+		pawnRow = 6; 
+		for(int pawnCol = 0; pawnCol < 8; pawnCol++) {
+			for(int toRow = 0; toRow < 8; toRow++) {
+				for(int toCol = 0; toCol < 8; toCol++) {
+					cb.move(pawnRow, pawnCol, toRow, toCol);
+					
+					if((toRow == 5 || toRow == 4) && pawnCol - toCol == 0) {
+						assertBoardsEqual(cb, move(pawnRow, pawnCol, toRow, toCol, new Chessboard()));
+						cb = new Chessboard();
+					}else {
+						assertBoardsEqual(cb, new Chessboard());
+					}
+				}
+			}
+		}
+		
+		
+	}
+	@Test
+	@DisplayName("testing starting position knight movement")
+	void Test_Knight_Movement_In_Starting_Position() {
+		
+		Chessboard cb = new Chessboard();
+		
+		// black knights not supposed to move on first turn
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(0, 1, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(0, 6, i, j);
+				assertBoardsEqual(cb, new Chessboard());
+			}
+		}
+		
+		
+		// white knights
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(7, 1, i, j);
+				if((i == 5 && j == 0) ||(i == 5 && j == 2)) {
+					assertBoardsEqual(cb, move(7, 1, i, j, new Chessboard()));
+					cb = new Chessboard();
+				}else {
+					assertBoardsEqual(cb, new Chessboard());
+				}
+			}
+		}
+		
+		
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				cb.move(7, 6, i, j);
+				if((i == 5 && j == 5) || (i == 5 && j == 7)) {
+					assertBoardsEqual(cb, move(7, 6, i, j, new Chessboard()));
+					cb = new Chessboard();
+				}else {
+					assertBoardsEqual(cb, new Chessboard());
+				}
+			}
+		}
+		
+	}
+	
+	//TODO write tests when king is in check
+	
+	//TODO write test for castling 
+	
+	//TODO write tests for en passant
+	
+	//TODO write tests for king moving into check
+	
+	//TODO write tests for checkmate
+	
+	//TODO write more complicated tests
+	
+	// TODO test get moves
+	
+	//TODO make sure chessboard follows real game moves
+	@Test
+	@DisplayName("Simple Game 1")
+	void Simple_Game_1() {
+		Chessboard cb = new Chessboard();
+		Chessboard tester = new Chessboard();
+		
+		cb.move(6, 4, 4 ,4);
+		tester = move(6, 4, 4, 4, tester);
+		assertBoardsEqual(cb, tester);
+		
+		cb.move(1, 4, 3 ,4);
+		tester = move(1, 4, 3 ,4, tester);
+		assertBoardsEqual(cb, tester);
+		
+		cb.move(7, 6, 5 ,5);
+		tester = move(7, 6, 5 ,5, tester);
+		assertBoardsEqual(cb, tester);
+		
+		cb.move(1, 1, 3, 1);
+		tester = move(1, 1, 3, 1, tester);
+		assertBoardsEqual(cb, tester);
+		
+		cb.move(5, 5, 4 ,3);
+		tester = move(5, 5, 4 ,3, tester);
+		assertBoardsEqual(cb, tester);
+		
+		cb.move(3, 4, 4, 3);
+		tester = move(3, 4, 4, 3, tester);
+		assertBoardsEqual(cb, tester);
+	}
+	
+	//moves piece on Chessboard for easy testing
+	private Chessboard move(int startRow, int startCol, int endRow, int endCol, Chessboard b){
+		int[][] output = b.getBoard();
+		int piece = output[startRow][startCol];
+		output[startRow][startCol] = 0;
+		output[endRow][endCol] = piece;
+		return new Chessboard(output, true);
+	}
+	
+	// given: board dimensions are equal
+	// test whether boards are equal
+	private void assertBoardsEqual(Chessboard a, Chessboard b) {
+		int[][] boardA = a.getBoard();
+		int[][] boardB = b.getBoard();
+		
+		for(int i = 0; i < boardA.length; i++) {
+			for(int j = 0; j < boardA[0].length; j++) {
+				assertEquals(boardA[i][j], boardB[i][j]);
+			}
+		}
+		
+	}
+	
+}
