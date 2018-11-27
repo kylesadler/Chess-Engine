@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Chessboard {
-	// TODO things like checkmate, stalemate, and promotion
+	// FIXME things like checkmate, stalemate, and promotion
 	
 	/**
 	 * positive is white
@@ -229,12 +229,16 @@ public class Chessboard {
 		for(int row=0; row<8; row++) {
 			output += "|     |     |     |     |     |     |     |     |\n";
 			for(int col=0; col<8; col++) {
-				if(board[row][col] < 0) {
-					output += "| ";
+				if(board[row][col] == 0) {
+					output+="|     ";
 				}else {
-					output += "|  ";
+					if(board[row][col] < 0) {
+						output += "| ";
+					}else {
+						output += "|  ";
+					}
+					output+=board[row][col] + "  ";
 				}
-				output+=board[row][col] + "  ";
 			}
 			output +="|\n";
 			output += "|_____|_____|_____|_____|_____|_____|_____|_____|\n";
@@ -301,7 +305,7 @@ public class Chessboard {
 				board[7][5] = 2;
 			}else {
 				board[7][0] = 0;
-				board[7][2] = 2;
+				board[7][3] = 2;
 			}
 		}else {
 			canCastle[2] = false;
@@ -311,7 +315,7 @@ public class Chessboard {
 				board[0][5] = -2;
 			}else {
 				board[0][0] = 0;
-				board[0][2] = -2;
+				board[0][3] = -2;
 			}
 		}
 	}
@@ -319,7 +323,7 @@ public class Chessboard {
 		board[row][col] = 0;
 	}
 	private void movePiece(int startRow, int startCol, int endRow, int endCol) { // TODO check movePiece
-	
+		
 		// reset enPassant if reset flag is set
 		if(canEnPassant[2] != 0) {
 			canEnPassant = getNewEnPassant();
@@ -337,9 +341,9 @@ public class Chessboard {
 			castle("white", "Queenside");
 		}else if(piece == -6 && endRow == 0 && startRow == 0 && startCol == 4 && endCol == 2 && board[0][0] == -2) {
 			castle("black", "Queenside");
-		}else if(piece > 0 && isEnemySquare(piece, endRow + 1, endCol) && canEnPassant[0] == endRow + 1 && canEnPassant[1] == endCol) {
+		}else if(piece > 0 && !outOfBounds(endRow + 1, endCol) && isEnemySquare(piece, endRow + 1, endCol) && canEnPassant[0] == endRow + 1 && canEnPassant[1] == endCol) {
 			enPassant(endRow + 1, endCol);
-		}else if(piece < 0 && isEnemySquare(piece, endRow - 1, endCol) && canEnPassant[0] == endRow - 1 && canEnPassant[1] == endCol) {
+		}else if(piece < 0 && !outOfBounds(endRow - 1, endCol) && isEnemySquare(piece, endRow - 1, endCol) && canEnPassant[0] == endRow - 1 && canEnPassant[1] == endCol) {
 			enPassant(endRow - 1, endCol);
 		}
 		
@@ -549,9 +553,49 @@ public class Chessboard {
 	private ArrayList<int[]> getMovesBishop(int row, int col){
 		ArrayList<int[]> output = new ArrayList<int[]>(14);
 		for(int i=0; i < 8; i++) {
-			if()
+			if(!outOfBounds(row + i, col + i)) {
+				if(checkMove(row, col, row + i, col + i)) {
+					int[] temp = new int[2];
+					temp[0] = row + i;
+					temp[1] = col + i;
+					output.add(temp);
+				}
+			}
 		}
-		// TODO bishop get moves
+		
+		for(int i=0; i < 8; i++) {
+			if(!outOfBounds(row + i, col - i)) {
+				if(checkMove(row, col, row + i, col - i)) {
+					int[] temp = new int[2];
+					temp[0] = row + i;
+					temp[1] = col - i;
+					output.add(temp);
+				}
+			}
+		}
+		
+		for(int i=0; i < 8; i++) {
+			if(!outOfBounds(row - i, col + i)) {
+				if(checkMove(row, col, row - i, col + i)) {
+					int[] temp = new int[2];
+					temp[0] = row - i;
+					temp[1] = col + i;
+					output.add(temp);
+				}
+			}
+		}
+		
+		for(int i=0; i < 8; i++) {
+			if(!outOfBounds(row - i, col - i)) {
+				if(checkMove(row, col, row - i, col - i)) {
+					int[] temp = new int[2];
+					temp[0] = row - i;
+					temp[1] = col - i;
+					output.add(temp);
+				}
+			}
+		}
+		// TODO make bishop get moves more efficient
 		return output;
 	}
 	private ArrayList<int[]> getMovesKing(int kingRow, int kingCol){
@@ -668,7 +712,50 @@ public class Chessboard {
 			}
 		}
 		
-		// TODO check diagonals
+		// TODO make queen moves more efficient
+		for(int i=0; i < 8; i++) {
+			if(!outOfBounds(queenRow + i, queenCol + i)) {
+				if(checkMove(queenRow, queenCol, queenRow + i, queenCol + i)) {
+					int[] temp = new int[2];
+					temp[0] = queenRow + i;
+					temp[1] = queenCol + i;
+					output.add(temp);
+				}
+			}
+		}
+		
+		for(int i=0; i < 8; i++) {
+			if(!outOfBounds(queenRow + i, queenCol - i)) {
+				if(checkMove(queenRow, queenCol, queenRow + i, queenCol - i)) {
+					int[] temp = new int[2];
+					temp[0] = queenRow + i;
+					temp[1] = queenCol - i;
+					output.add(temp);
+				}
+			}
+		}
+		
+		for(int i=0; i < 8; i++) {
+			if(!outOfBounds(queenRow - i, queenCol + i)) {
+				if(checkMove(queenRow, queenCol, queenRow - i, queenCol + i)) {
+					int[] temp = new int[2];
+					temp[0] = queenRow - i;
+					temp[1] = queenCol + i;
+					output.add(temp);
+				}
+			}
+		}
+		
+		for(int i=0; i < 8; i++) {
+			if(!outOfBounds(queenRow - i, queenCol - i)) {
+				if(checkMove(queenRow, queenCol, queenRow - i, queenCol - i)) {
+					int[] temp = new int[2];
+					temp[0] = queenRow - i;
+					temp[1] = queenCol - i;
+					output.add(temp);
+				}
+			}
+		}
 		
 		return output;
 	}
@@ -708,18 +795,22 @@ public class Chessboard {
 			return false;
 		}
 		
-		// ensure that startCol <= endCol and startRow <= endRow (problem is symmetric, so this is valid)
-		if(colDiff < 0) {
-			return isEmptyBetween(startRow, endCol, endRow, startCol);
-		}
+		// ensure that startRow <= endRow (problem is symmetric, so this is valid)
+		
 		if(rowDiff < 0) {
-			return isEmptyBetween(endRow, startCol, startRow, endCol);
+			return isEmptyBetween(endRow, endCol, startRow, startCol);
 		}
 		
 		// actually check if empty between
 		if(rowDiff == colDiff) {
 			for(int i=1; i < rowDiff; i++) {
 				if(!isEmptySquare(startRow + i, startCol + i)) {
+					return false;
+				}
+			}
+		}else if(rowDiff == -colDiff) {
+			for(int i=1; i < rowDiff; i++) {
+				if(!isEmptySquare(startRow + i, startCol - i)) {
 					return false;
 				}
 			}

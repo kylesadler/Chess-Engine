@@ -214,17 +214,17 @@ class ChessboardTest {
 	
 	//TODO write test for castling 
 	
-	//TODO write tests for en passant
+	//FIXME write tests for en passant
 	
 	//TODO write tests for king moving into check
 	
-	//TODO write tests for checkmate
+	//FIXME write tests for checkmate
 	
 	//TODO write more complicated tests
 	
 	// TODO test get moves
 	
-	//TODO make sure chessboard follows real game moves
+	//FIXME make sure chessboard follows real game moves
 	@Test
 	@DisplayName("Simple Game 1")
 	void Simple_Game_1() {
@@ -254,6 +254,143 @@ class ChessboardTest {
 		cb.move(3, 4, 4, 3);
 		tester = move(3, 4, 4, 3, tester);
 		assertBoardsEqual(cb, tester);
+	}
+	
+	@Test
+	@DisplayName("Simple Game 2")
+	void Simple_Game_2() {
+		Chessboard cb = new Chessboard();
+		Chessboard tester = new Chessboard();
+		
+		// uses en passant
+		
+		// e4
+		cb.move(6, 4, 4 ,4);
+		tester = move(6, 4, 4, 4, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// e5
+		cb.move(1, 4, 3 ,4);
+		tester = move(1, 4, 3 ,4, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Nf3
+		cb.move(7, 6, 5 ,5);
+		tester = move(7, 6, 5 ,5, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Nc6
+		cb.move(0, 1, 2, 2);
+		tester = move(0, 1, 2, 2, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// d4
+		cb.move(6, 3, 4 ,3);
+		tester = move(6, 3, 4 ,3, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// exd4
+		cb.move(3, 4, 4, 3);
+		tester = move(3, 4, 4, 3, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Nxd4
+		cb.move(5 ,5, 4, 3);
+		tester = move(5 ,5, 4, 3, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Nf6
+		cb.move(0, 6, 2, 5);
+		tester = move(0, 6, 2, 5, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Nxc6
+		cb.move(4, 3, 2, 2);
+		tester = move(4, 3, 2, 2, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// bxc6
+		cb.move(1,1,2,2);
+		tester = move(1,1,2,2, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// e5
+		cb.move(4,4,3,4);
+		tester = move(4,4,3,4, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Qe7
+		cb.move(0,3,1,4);
+		tester = move(0,3,1,4, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Qe2
+		cb.move(7,3,6,4);
+		tester = move(7,3,6,4, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Nd5
+		cb.move(2,5,3,3);
+		tester = move(2,5,3,3, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// c4
+		cb.move(6,2,4,2);
+		tester = move(6,2,4,2, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Nb6
+		cb.move(3,3,2,1);
+		tester = move(3,3,2,1, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Nc3
+		cb.move(7,1,5,2);
+		tester = move(7,1,5,2, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Qe6
+		cb.move(1,4,2,4);
+		tester = move(1,4,2,4, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Qe4
+		cb.move(6,4,4,4);
+		tester = move(6,4,4,4, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Bb4
+		cb.move(0,5,4,1);
+		tester = move(0,5,4,1, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Bd2
+		cb.move(7,2,6,3);
+		tester = move(7,2,6,3, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Bb7
+		cb.move(0,2,1,1);
+		tester = move(0,2,1,1, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// Bd3
+		cb.move(7,5,5,3);
+		tester = move(7,5,5,3, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// 0-0-0
+		cb.move(0,4,0,2);
+		tester = move(0,4,0,2, tester);
+		tester = move(0,0,0,3, tester);
+		assertBoardsEqual(cb, tester);
+		
+		// 0-0-0
+		cb.move(7,4,7,2);
+		tester = move(7,4,7,2, tester);
+		tester = move(7,0,7,3, tester);
+		assertBoardsEqual(cb, tester);
+		
 	}
 	
 	//moves piece on Chessboard for easy testing
